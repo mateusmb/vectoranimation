@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/icons/046-pen.png</file>
+        <file>res/icons/047-eraser.png</file>
+        <file>res/icons/044-marquee.png</file>
+        <file>res/icons/033-move.png</file>
+    </qresource>
+</RCC>
