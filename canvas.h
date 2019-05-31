@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QLine>
+#include <QRubberBand>
 
 class Canvas : public QWidget
 {
@@ -42,11 +43,17 @@ private:
     QPen           pen;
     QPoint         last_point;
     QPoint         end_point;
+    QPoint         move_point_last;
+    QPoint         move_point_end;
+    QPoint         rubber_origin;
     QVector<QLine> lines;
+    QVector<QLine> lines_selected;
+    QRubberBand    rubber_band;
     bool           image_modified, mouse_pressed;
     bool           draw_mode, selection_mode, move_mode;
 
     void drawLineBetweenPoints(const QPoint &end_point);
+    void moveRubberPoints(const QPoint &end_point);
 };
 
 #endif // CANVAS_H

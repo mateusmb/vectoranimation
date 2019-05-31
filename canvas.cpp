@@ -1,4 +1,5 @@
 #include "canvas.h"
+#include <iostream>
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent),
   pen(Qt::black, 10, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin),
@@ -6,7 +7,8 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent),
   mouse_pressed(false),
   draw_mode(true),
   selection_mode(false),
-  move_mode(false)
+  move_mode(false),
+  rubber_band(QRubberBand::Line, this)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
@@ -28,29 +30,65 @@ void Canvas::paintEvent(QPaintEvent *event)
 
 void Canvas::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton) {
+    if(this->selection_mode) {
+        rubber_origin = event->pos();
+        rubber_band.setGeometry(QRect(rubber_origin, QSize()));
+        rubber_band.show();
+    } else if(move_mode) {
         mouse_pressed = true;
-        if(draw_mode) {
-            last_point = event->pos();
+        move_point_last = event->pos();
+    } else {
+        if(event->button() == Qt::LeftButton) {
+            mouse_pressed = true;
+            if(draw_mode) {
+                last_point = event->pos();
+            }
         }
     }
 }
 
 void Canvas::mouseMoveEvent(QMouseEvent *event)
 {
-    if(mouse_pressed) {
-        if(draw_mode) {
-            drawLineBetweenPoints(event->pos());
+    if(this->selection_mode) {
+        rubber_band.setGeometry(QRect(rubber_origin, event->pos()).normalized());
+    } else if(move_mode) {
+        moveRubberPoints(event->pos());
+    } else {
+        if(mouse_pressed) {
+            if(draw_mode) {
+                drawLineBetweenPoints(event->pos());
+            }
         }
     }
 }
 
 void Canvas::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(mouse_pressed) {
-        if(draw_mode) {
-            drawLineBetweenPoints(event->pos());
-            mouse_pressed = false;
+    if(this->selection_mode) {
+
+//        rubber_band.hide();
+        QPalette palette;
+        palette.setBrush(QPalette::Highlight, QBrush(Qt::black));
+        rubber_band.setPalette(palette);
+        QRect contained_rubber(rubber_origin, event->pos());
+        for(auto line : lines) {
+            if(contained_rubber.normalized().contains(line.p1()) &&
+                    contained_rubber.normalized().contains(line.p1())) {
+                lines_selected.append(line);
+            }
+        }
+        for(auto line : lines_selected) {
+            std::cout << line.p1().x() << "," << line.p1().y() << "," << line.p2().x() << "," << line.p2().y() << std::endl;
+        }
+    } else if(move_mode) {
+        moveRubberPoints(event->pos());
+        mouse_pressed = false;
+    } else {
+        if(mouse_pressed) {
+            if(draw_mode) {
+                drawLineBetweenPoints(event->pos());
+                mouse_pressed = false;
+            }
         }
     }
 }
@@ -61,6 +99,21 @@ void Canvas::drawLineBetweenPoints(const QPoint &end_point)
     update();
     image_modified = true;
     last_point = end_point;
+}
+
+void Canvas::moveRubberPoints(const QPoint &end_point)
+{
+    move_point_end = end_point;
+    int delta_x = move_point_end.x() - move_point_last.x();
+    int delta_y = move_point_end.y() - move_point_last.y();
+    rubber_band.move(rubber_band.x()+delta_x,rubber_band.y()+delta_y);
+    for(int i = 0; i < lines_selected.size(); i++) {
+        lines_selected[i].setP1(QPoint(lines_selected[i].x1()+delta_x,lines_selected[i].y1()+delta_y));
+        lines_selected[i].setP2(QPoint(lines_selected[i].x2()+delta_x,lines_selected[i].y2()+delta_y));
+    }
+    lines = lines_selected;
+    update();
+    move_point_last = move_point_end;
 }
 
 bool Canvas::openImage(const QString &file)
