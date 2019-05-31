@@ -92,7 +92,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="frame">
     <property name="geometry">
      <rect>
       <x>1670</x>
@@ -102,7 +102,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>10</string>
+     <string>1</string>
     </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -123,7 +123,10 @@
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="horizontalSlider">
+      <widget class="QSlider" name="timeline">
+       <property name="minimum">
+        <number>1</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

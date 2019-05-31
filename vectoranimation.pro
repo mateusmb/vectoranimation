@@ -30,6 +30,7 @@ SOURCES += \
     canvas.cpp
 
 HEADERS += \
+    frame.h \
         luckyrabbit.h \
     canvas.h \
     point.h

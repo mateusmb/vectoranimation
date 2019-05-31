@@ -9,6 +9,7 @@
 #include <QPoint>
 #include <QLine>
 #include <QRubberBand>
+#include "frame.h"
 
 class Canvas : public QWidget
 {
@@ -26,6 +27,11 @@ public:
 
     void setMoveMode(bool move_mode) { this->move_mode = move_mode; }
     bool isMoveMode() const { return move_mode; }
+
+    void  setCurrentFrame(int current_frame);
+    Frame getCurrentFrame() const { return current_frame; }
+
+    void setFrame();
 
 protected:
     void paintEvent(QPaintEvent *event)        override;
@@ -48,12 +54,15 @@ private:
     QPoint         rubber_origin;
     QVector<QLine> lines;
     QVector<QLine> lines_selected;
+    QVector<Frame> frames;
     QRubberBand    rubber_band;
     bool           image_modified, mouse_pressed;
     bool           draw_mode, selection_mode, move_mode;
+    Frame          current_frame;
 
     void drawLineBetweenPoints(const QPoint &end_point);
     void moveRubberPoints(const QPoint &end_point);
+
 };
 
 #endif // CANVAS_H

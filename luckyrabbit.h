@@ -25,6 +25,10 @@ private slots:
 
     void on_moveButton_clicked();
 
+    void on_timeline_sliderMoved(int position);
+
+    void on_pushButton_clicked();
+
 private:
     Ui::LuckyRabbit *ui;
 };

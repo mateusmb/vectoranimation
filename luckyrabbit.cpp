@@ -1,5 +1,6 @@
 #include "luckyrabbit.h"
 #include "ui_luckyrabbit.h"
+#include <iostream>
 
 LuckyRabbit::LuckyRabbit(QWidget *parent) :
     QMainWindow(parent),
@@ -49,4 +50,15 @@ void LuckyRabbit::on_moveButton_clicked()
     ui->canvas->setMoveMode(true);
     ui->canvas->setDrawMode(false);
     ui->canvas->setSelectionMode(false);
+}
+
+void LuckyRabbit::on_timeline_sliderMoved(int position)
+{
+    ui->frame->setNum(position);
+    ui->canvas->setCurrentFrame(position);
+}
+
+void LuckyRabbit::on_pushButton_clicked()
+{
+    ui->canvas->setFrame();
 }
