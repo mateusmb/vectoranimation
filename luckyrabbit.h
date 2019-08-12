@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "canvas.h"
+#include "steamboat.h"
 
 namespace Ui {
 class LuckyRabbit;
@@ -29,8 +30,11 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::LuckyRabbit *ui;
+    Steamboat *steamboat;
 };
 
 #endif // LUCKYRABBIT_H

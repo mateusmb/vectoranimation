@@ -18,6 +18,7 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent),
 void Canvas::clearImage()
 {
     lines.clear();
+    current_frame.shapes.clear();
     update();
 }
 
@@ -134,7 +135,7 @@ void Canvas::setFrame()
     Frame frame;
     frame.id = current_frame.id;
     frame.shapes = current_frame.shapes;
-    frames.push_back(frame);
+    frames.append(frame);
     std::cout << "Frame setted: " << frame.id << std::endl;
     std::cout << "::Lines::" << std::endl;
     for(auto line : frame.shapes) {

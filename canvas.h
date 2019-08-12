@@ -33,6 +33,8 @@ public:
 
     void setFrame();
 
+    QVector<Frame> getFrames() const { return this->frames; }
+
 protected:
     void paintEvent(QPaintEvent *event)        override;
     void mousePressEvent(QMouseEvent *event)   override;

@@ -62,3 +62,10 @@ void LuckyRabbit::on_pushButton_clicked()
 {
     ui->canvas->setFrame();
 }
+
+void LuckyRabbit::on_pushButton_2_clicked()
+{
+    steamboat = new Steamboat();
+    steamboat->setFrames(ui->canvas->getFrames());
+    steamboat->show();
+}

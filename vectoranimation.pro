@@ -27,16 +27,22 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         luckyrabbit.cpp \
-    canvas.cpp
+    canvas.cpp \
+    playscreen.cpp \
+    steamboat.cpp
 
 HEADERS += \
+    animation.h \
     frame.h \
         luckyrabbit.h \
     canvas.h \
-    point.h
+    playscreen.h \
+    point.h \
+    steamboat.h
 
 FORMS += \
-        luckyrabbit.ui
+        luckyrabbit.ui \
+        steamboat.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
